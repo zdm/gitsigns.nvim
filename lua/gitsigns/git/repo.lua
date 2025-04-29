@@ -174,6 +174,14 @@ local function process_abbrev_head(gitdir, head_str, cwd)
   return short_sha
 end
 
+local function normalize_cygpath(path)
+  if vim.fn.has('win32') and string.sub(path, 1, 1) == '/' then
+    path = string.sub(path, 2, 2) .. ':' .. string.sub(path, 3)
+  end
+
+  return path
+end
+
 --- @async
 --- @param cwd string
 --- @param gitdir? string
@@ -226,8 +234,8 @@ function M.get_info(cwd, gitdir, worktree)
   end
   --- @cast stdout [string, string, string]
 
-  local toplevel_r = stdout[1]
-  local gitdir_r = stdout[2]
+  local toplevel_r = normalize_cygpath(stdout[1])
+  local gitdir_r = normalize_cygpath(stdout[2])
 
   if not has_abs_gd then
     gitdir_r = assert(uv.fs_realpath(gitdir_r))
