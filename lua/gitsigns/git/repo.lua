@@ -316,7 +316,7 @@ function M:ls_files(file)
     '--others',
     '--exclude-standard',
     has_eol and '--eol',
-    file,
+    vim.fs.relpath(self.toplevel, file),
   }, { ignore_error = true })
 
   -- ignore_error for the cases when we run:
