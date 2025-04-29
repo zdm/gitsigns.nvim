@@ -176,7 +176,7 @@ end
 
 local function normalize_cygpath(path)
   if vim.fn.has('win32') and string.sub(path, 1, 1) == '/' then
-    path = string.sub(path, 2, 2) .. ':' .. string.sub(path, 3)
+    path = string.gsub(string.sub(path, 2, 2) .. ':' .. string.sub(path, 3), '/', '\\')
   end
 
   return path
