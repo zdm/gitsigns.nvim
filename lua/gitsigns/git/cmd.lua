@@ -32,10 +32,6 @@ end
 --- @return string[] stdout, string? stderr, integer code
 local function git_command(args, spec)
   spec = spec or {}
-  if spec.cwd then
-    -- cwd must be a windows path and not a unix path
-    spec.cwd = util.cygpath(spec.cwd)
-  end
 
   local cmd = flatten({
     'git',

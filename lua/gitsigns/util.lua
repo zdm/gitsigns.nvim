@@ -380,46 +380,22 @@ function M.tointeger(x)
   end
 end
 
-local has_cygpath --- @type boolean?
-
---- @async
---- @param path string
---- @param mode? 'unix'|'windows' (default: 'windows')
---- @return string
-function M.cygpath(path, mode)
-  local async = require('gitsigns.async')
-  local system = require('gitsigns.system').system
-
-  if has_cygpath == nil then
-    has_cygpath = is_win and vim.fn.executable('cygpath') == 1
-  end
-
-  if not has_cygpath or uv.fs_stat(path) then
-    return path
-  end
-
-  -- If on windows and path isn't recognizable as a file, try passing it
-  -- through cygpath
-  --- @type string
-  local stdout = async.await(3, system, {
-    'cygpath',
-    '--absolute',
-    '--' .. (mode or 'windows'),
-    path,
-  }, { text = true }).stdout
-  return assert(vim.split(stdout, '\n')[1])
-end
-
 --- @param path string
 --- @return boolean
 function M.is_abspath(path)
+
   -- Check if the path is absolute on Windows
-  if is_win and M.cygpath(path):match('^%a:[/\\]') then
-    return true
-  end
+  if is_win then
+    if path:match('^%a:[/\\]') then
+      return true
+    else
+      return false
+    end
 
   -- Check if the path is absolute on Unix-like systems
-  return vim.startswith(path, '/')
+  else
+    return vim.startswith(path, '/')
+  end
 end
 
 return M
