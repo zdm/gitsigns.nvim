@@ -73,7 +73,6 @@ M.toggle_signs = function(value)
   else
     config.signcolumn = not config.signcolumn
   end
-  M.refresh()
   return config.signcolumn
 end
 
@@ -89,7 +88,6 @@ M.toggle_numhl = function(value)
   else
     config.numhl = not config.numhl
   end
-  M.refresh()
   return config.numhl
 end
 
@@ -104,7 +102,6 @@ M.toggle_linehl = function(value)
   else
     config.linehl = not config.linehl
   end
-  M.refresh()
   return config.linehl
 end
 
@@ -135,7 +132,6 @@ M.toggle_current_line_blame = function(value)
   else
     config.current_line_blame = not config.current_line_blame
   end
-  M.refresh()
   return config.current_line_blame
 end
 
@@ -151,7 +147,6 @@ M.toggle_deleted = function(value)
   else
     config.show_deleted = not config.show_deleted
   end
-  M.refresh()
   return config.show_deleted
 end
 
