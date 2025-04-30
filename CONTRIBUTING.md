@@ -26,4 +26,3 @@ To run the testsuite:
 ```bash
 make test
 ```
-
