@@ -176,7 +176,7 @@ local function process_abbrev_head(gitdir, head_str, cwd)
 end
 
 local function normalize_cygpath(path)
-  if vim.fn.has('win32') and string.sub(path, 1, 1) == '/' then
+  if vim.fn.has('win32') == 1 and string.sub(path, 1, 1) == '/' then
     path = string.gsub(string.sub(path, 2, 2) .. ':' .. string.sub(path, 3), '/', '\\')
   end
 
