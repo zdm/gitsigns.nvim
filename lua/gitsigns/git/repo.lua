@@ -9,8 +9,6 @@ local uv = vim.uv or vim.loop ---@diagnostic disable-line: deprecated
 
 local has_cygpath
 local function normalize_cygwin_path(path)
-  path = path and vim.trim(path)
-
   if path and vim.fn.has('win32') == 1 and string.sub(path, 1, 1) == '/' then
     if has_cygpath == nil then
       has_cygpath = vim.fn.executable('cygpath') == 1
