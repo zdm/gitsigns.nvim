@@ -7,6 +7,33 @@ local check_version = require('gitsigns.git.version').check
 
 local uv = vim.uv or vim.loop ---@diagnostic disable-line: deprecated
 
+local has_cygpath
+local function normalize_cygwin_path(path)
+  path = path and vim.trim(path)
+
+  if path and vim.fn.has('win32') == 1 and string.sub(path, 1, 1) == '/' then
+    if has_cygpath == nil then
+      has_cygpath = vim.fn.executable('cygpath') == 1
+    end
+
+    if has_cygpath then
+      local system = require('gitsigns.system').system
+
+      path = async.await(3, system, {
+        'cygpath',
+        '--absolute',
+        '--windows',
+        path,
+      }, { text = true }).stdout
+
+      -- remove "\n"
+      path = string.sub(path, 1, #path -1)
+    end
+  end
+
+  return path
+end
+
 --- @class Gitsigns.RepoInfo
 --- @field gitdir string
 --- @field toplevel string
@@ -175,14 +202,6 @@ local function process_abbrev_head(gitdir, head_str, cwd)
   return short_sha
 end
 
-local function normalize_cygpath(path)
-  if vim.fn.has('win32') == 1 and string.sub(path, 1, 1) == '/' then
-    path = string.gsub(string.sub(path, 2, 2) .. ':' .. string.sub(path, 3), '/', '\\')
-  end
-
-  return path
-end
-
 --- @param dir? string
 --- @param gitdir? string
 --- @param worktree? string
@@ -271,8 +290,8 @@ function M.get_info(dir, gitdir, worktree)
   end
   --- @cast stdout [string, string, string]
 
-  local toplevel_r = normalize_cygpath(stdout[1])
-  local gitdir_r = normalize_cygpath(stdout[2])
+  local toplevel_r = normalize_cygwin_path(stdout[1])
+  local gitdir_r = normalize_cygwin_path(stdout[2])
 
   if not has_abs_gd then
     gitdir_r = assert(uv.fs_realpath(gitdir_r))
