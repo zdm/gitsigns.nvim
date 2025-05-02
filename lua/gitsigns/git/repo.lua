@@ -57,12 +57,27 @@ function M:command(args, spec)
   spec = spec or {}
   spec.cwd = self.toplevel
 
-  return git_command({
+  local lines, err, code = git_command({
     '--git-dir',
     self.gitdir,
     self.detached and { '--work-tree', self.toplevel },
     args,
   }, spec)
+
+  -- decrypt content, encrypted by "git-crypt"
+  if lines and lines[1] and string.sub(lines[1], 1, 10) == '\0GITCRYPT\0' then
+    spec.stdin = table.concat(lines, '\n')
+
+    lines, err, code = git_command({
+      '--git-dir',
+      self.gitdir,
+      self.detached and { '--work-tree', self.toplevel },
+      'crypt',
+      'smudge',
+    }, spec)
+  end
+
+  return lines, err, code
 end
 
 --- @async
@@ -261,7 +276,7 @@ function M.get_info(dir, gitdir, worktree)
   local toplevel_r = normalize_cygwin_path(stdout[1])
   local gitdir_r = normalize_cygwin_path(stdout[2])
 
-  if dir and not vim.startswith(dir, toplevel_r) then
+  if dir and not vim.fs.relpath(toplevel_r, dir) then
     log.dprintf("'%s' is outside worktree '%s'", dir, toplevel_r)
     -- outside of worktree
     return
