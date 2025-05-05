@@ -104,13 +104,6 @@ local function resolve_default(v)
   end
 end
 
-local diffalgos = {
-  myers = 'myers',
-  minimal = 'minimal',
-  patience = 'patience',
-  histogram = 'histogram',
-}
-
 --- @return Gitsigns.DiffOpts
 local function parse_diffopt()
   --- @type Gitsigns.DiffOpts
@@ -137,8 +130,7 @@ local function parse_diffopt()
     elseif o == 'horizontal' then
       r.vertical = false
     elseif vim.startswith(o, 'algorithm:') then
-      local algorithm = o:sub(#'algorithm:' + 1)
-      r.algorithm = diffalgos[algorithm]
+      r.algorithm = o:sub(('algorithm:'):len() + 1)
     elseif vim.startswith(o, 'linematch:') then
       r.linematch = tonumber(o:sub(('linematch:'):len() + 1))
     end

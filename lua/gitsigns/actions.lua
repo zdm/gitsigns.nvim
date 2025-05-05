@@ -316,8 +316,7 @@ M.reset_buffer = function()
   end
 
   for i = #hunks, 1, -1 do
-    local hunk = hunks[i] --[[@as Gitsigns.Hunk.Hunk]]
-    reset_hunk(bufnr, hunk)
+    reset_hunk(bufnr, hunks[i])
   end
 end
 
