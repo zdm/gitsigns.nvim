@@ -54,7 +54,7 @@
 --- @class (exact) Gitsigns.Config
 --- @field package _config table<string,any> config store
 --- @field debug_mode boolean
---- @field git string
+--- @field git_cmd string
 --- @field diff_opts Gitsigns.DiffOpts
 --- @field base? string
 --- @field signs table<Gitsigns.SignType,Gitsigns.SignConfig>
@@ -916,7 +916,7 @@ M.schema = {
     ]],
   },
 
-  git = {
+  git_cmd = {
     type = 'string',
     default = 'git',
     description = [[

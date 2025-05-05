@@ -45,7 +45,7 @@ local CP = {}
 local function complete_heads(arglead)
   --- @type string[]
   local all = vim.fn.systemlist({
-    config.git,
+    config.git_cmd,
     'rev-parse',
     '--symbolic',
     '--branches',

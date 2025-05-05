@@ -38,7 +38,7 @@ local function git_command(args, spec)
   end
 
   local cmd = flatten({
-    config.git,
+    config.git_cmd,
     '--no-pager',
     '--no-optional-locks',
     '--literal-pathspecs',
