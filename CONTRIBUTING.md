@@ -3,7 +3,7 @@
 ## Requirements
 
 - [Luarocks](https://luarocks.org/)
-    - `brew install luarocks`
+  - `brew install luarocks`
 
 ## Generating docs
 
@@ -12,7 +12,7 @@ The documentation is generated with the lua script `gen_help.lua` which has been
 
 The documentation can be updated with:
 
-```bash
+```sh
 make gen_help
 ```
 
@@ -23,7 +23,6 @@ This is just busted with lots of helper code to create headless neovim instances
 
 To run the testsuite:
 
-```bash
+```sh
 make test
 ```
-
