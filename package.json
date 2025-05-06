@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "description": "Fork of gitsigns.nvim",
-  "homepage": "https://github.com/softvisio/deb",
+  "homepage": "https://github.com/zdm/gitsigns.nvim",
   "bugs": {
     "url": "https://github.com/zdm/gitsigns.nvim/issues",
     "email": "root <root@softvisio.net>"
