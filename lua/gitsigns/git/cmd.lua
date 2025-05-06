@@ -1,7 +1,7 @@
 local async = require('gitsigns.async')
 local log = require('gitsigns.debug.log')
 local util = require('gitsigns.util')
-
+local config = require('gitsigns.config').config
 local system = require('gitsigns.system').system
 
 --- @type fun(cmd: string[], opts?: vim.SystemOpts): vim.SystemCompleted
@@ -34,7 +34,7 @@ local function git_command(args, spec)
   spec = spec or {}
 
   local cmd = flatten({
-    'git',
+    config.git_cmd,
     '--no-pager',
     '--no-optional-locks',
     '--literal-pathspecs',

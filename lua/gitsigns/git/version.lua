@@ -52,7 +52,7 @@ local function set_version()
   end
 
   --- @type vim.SystemCompleted
-  local obj = asystem({ 'git', '--version' })
+  local obj = asystem({ gs_config.config.git_cmd, '--version' })
   async.schedule()
 
   local line = vim.split(obj.stdout or '', '\n')[1]
