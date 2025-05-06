@@ -1,0 +1,17 @@
+{
+  "name": "gitsigns.nvim",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Fork of gitsigns.nvim",
+  "homepage": "https://github.com/softvisio/deb",
+  "bugs": {
+    "url": "https://github.com/zdm/diffview.nvim/issues",
+    "email": "root <root@softvisio.net>"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zdm/diffview.nvim.git"
+  },
+  "license": "Proprietary Software",
+  "author": "root <root@softvisio.net>"
+}
