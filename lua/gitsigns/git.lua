@@ -87,7 +87,7 @@ function Obj:get_show_text(revision)
     return { '' }
   end
 
-  local stdout, stderr = self.repo:get_show_text(object, self.encoding)
+  local stdout, stderr, crypto = self.repo:get_show_text(object, self.encoding)
 
   -- detect renames
   if
@@ -107,7 +107,7 @@ function Obj:get_show_text(revision)
     end
   end
 
-  if not self.i_crlf and self.w_crlf then
+  if not crypto and not self.i_crlf and self.w_crlf then
     -- Add cr
     -- Do not add cr to the newline at the end of file
     for i = 1, #stdout - 1 do
