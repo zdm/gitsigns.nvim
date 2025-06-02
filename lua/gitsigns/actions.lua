@@ -27,6 +27,7 @@ local M = {}
 --- @field vertical? boolean
 --- @field split? boolean
 --- @field global? boolean
+--- @field [integer] any
 
 --- @class Gitsigns.CmdParams
 --- @field range integer
@@ -317,7 +318,7 @@ M.reset_buffer = function()
   end
 
   for i = #hunks, 1, -1 do
-    reset_hunk(bufnr, hunks[i])
+    reset_hunk(bufnr, hunks[i] --[[@as Gitsigns.Hunk.Hunk]])
   end
 end
 
@@ -616,18 +617,19 @@ local function get_blame_hunk(repo, info)
 
   if i_next and i_prev then
     -- if there is hunk before and after, find the closest
-    local dist_n = math.abs(hunks[i_next].added.start - info.orig_lnum)
-    local dist_p = math.abs(hunks[i_prev].added.start - info.orig_lnum)
+    local dist_n = math.abs(assert(hunks[i_next]).added.start - info.orig_lnum)
+    local dist_p = math.abs(assert(hunks[i_prev]).added.start - info.orig_lnum)
     i = dist_n < dist_p and i_next or i_prev
   else
     i = assert(i_next or i_prev, 'no hunks in commit')
   end
 
-  return hunks[i], i, #hunks, hunks[i].added.start - info.orig_lnum
+  hunk = assert(hunks[i])
+  return hunk, i, #hunks, hunk.added.start - info.orig_lnum
 end
 
 --- @async
---- @param full boolean Whether to show the full commit message and hunk
+--- @param full boolean? Whether to show the full commit message and hunk
 --- @param result Gitsigns.BlameInfoPublic
 --- @param repo Gitsigns.Repo
 --- @param fileformat string
