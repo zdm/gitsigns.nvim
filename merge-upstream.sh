@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -Eeuo pipefail
-trap 'echo -e "⚠  Warning: A command has failed. Line ($0:$LINENO): $(sed -n "${LINENO}p" "$0" 2> /dev/null || true)" >&2; return 3 2> /dev/null || exit 3' ERR
+trap 'echo -e "⚠  Error ($0:$LINENO): $(sed -n "${LINENO}p" "$0" 2> /dev/null | grep -oE "\S.*\S|\S" || true)" >&2; return 3 2> /dev/null || exit 3' ERR
 
 git fetch upstream
 
