@@ -195,6 +195,13 @@ setqflist({target}, {opts}, {callback?})                *gitsigns.setqflist()*
                                Open the quickfix/location list viewer.
                                Defaults to `true`.
 
+show_commit({revision}, {open}, {callback?})              *gitsigns.show_commit()*
+                Show revision {base} commit in split or tab
+
+                Parameters: ~
+                    {revision?} (string?): (default: 'HEAD')
+                    {open?}     ('vsplit'|'tabnew'):
+
 show({revision}, {callback})                                 *gitsigns.show()*
                 Show revision {base} of the current file, if it is given, or
                 with the currently set base (index by default).
@@ -951,6 +958,12 @@ trouble                                              *gitsigns-config-trouble*
 
       When using setqflist() or setloclist(), open Trouble instead of the
       quickfix/location list window.
+
+gh                                                        *gitsigns-config-gh*
+      Type: `boolean`, Default: `false`
+
+      Enable GitHub integration. This allows the following features:
+      • `:Gitsigns blame_line` will show PR numbers (with a hyperlink)
 
 word_diff                                          *gitsigns-config-word_diff*
       Type: `boolean`, Default: `false`
