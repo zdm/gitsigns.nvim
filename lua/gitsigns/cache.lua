@@ -68,7 +68,7 @@ function M.new(bufnr, file, git_obj)
   }, { __index = CacheEntry })
 end
 
-local sleep = async.awrap(2, function(duration, cb)
+local sleep = async.wrap(2, function(duration, cb)
   vim.defer_fn(cb, duration)
 end)
 
@@ -225,10 +225,10 @@ function CacheEntry:get_hunks(greedy, staged)
   end
 
   if staged then
-    return vim.deepcopy(self.hunks_staged)
+    return vim.deepcopy((assert(self.hunks_staged)))
   end
 
-  return vim.deepcopy(self.hunks)
+  return vim.deepcopy((assert(self.hunks)))
 end
 
 --- @param hunks? Gitsigns.Hunk.Hunk[]?
