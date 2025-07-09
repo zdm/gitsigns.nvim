@@ -3,7 +3,7 @@ local log = require('gitsigns.debug.log')
 local system = require('gitsigns.system').system
 
 --- @type async fun(cmd: string[], opts?: vim.SystemOpts): vim.SystemCompleted
-local asystem = async.awrap(3, system)
+local asystem = async.wrap(3, system)
 
 --- @class gitsigns.gh.PrInfo
 --- @field url string
@@ -20,6 +20,7 @@ local function gh_cmd(args, cwd)
     log.eprintf('Could not find gh command')
     return
   end
+  --- @diagnostic disable-next-line: param-type-not-match EmmyLuaLs/emmylua-analyzer-rust#594
   local obj = asystem({ 'gh', unpack(args) }, { cwd = cwd })
 
   if obj.code ~= 0 then
