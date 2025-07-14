@@ -194,7 +194,6 @@ end
 ---               Stage all contiguous hunks. Only useful if 'diff_opts'
 ---               contains `linematch`. Defaults to `true`.
 M.stage_hunk = mk_repeatable(async.create(2, function(range, opts)
-  --- @diagnostic disable-next-line: cast-type-mismatch EmmyLuaLs/emmylua-analyzer-rust#565
   --- @cast range [integer, integer]?
 
   opts = opts or {}
@@ -278,7 +277,6 @@ end
 ---       Stage all contiguous hunks. Only useful if 'diff_opts'
 ---       contains `linematch`. Defaults to `true`.
 M.reset_hunk = mk_repeatable(async.create(2, function(range, opts)
-  --- @diagnostic disable-next-line: cast-type-mismatch EmmyLuaLs/emmylua-analyzer-rust#565
   --- @cast range [integer, integer]?
 
   opts = opts or {}
@@ -459,7 +457,6 @@ end)
 ---     • {count}: (integer)
 ---       Number of times to advance. Defaults to |v:count1|.
 M.nav_hunk = async.create(2, function(direction, opts)
-  --- @diagnostic disable-next-line: cast-type-mismatch EmmyLuaLs/emmylua-analyzer-rust#565
   --- @cast opts Gitsigns.NavOpts?
   require('gitsigns.actions.nav').nav_hunk(direction, opts)
 end)
@@ -601,7 +598,6 @@ end
 ---     • {extra_opts}: (string[])
 ---       Extra options passed to `git-blame`.
 M.blame_line = async.create(1, function(opts)
-  --- @diagnostic disable-next-line: cast-type-mismatch EmmyLuaLs/emmylua-analyzer-rust#565
   --- @cast opts Gitsigns.LineBlameOpts?
   require('gitsigns.actions.blame_line')(opts)
 end)
