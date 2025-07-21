@@ -8,6 +8,9 @@
 --- @field default_help? string
 --- @field description string
 
+--- @class (exact) Gitsigns.DiffthisOpts
+--- @field split string
+
 --- @class (exact) Gitsigns.DiffOpts
 --- @field algorithm 'myers'|'minimal'|'patience'|'histogram'
 --- @field internal boolean
@@ -49,6 +52,7 @@
 --- @field debug_mode boolean
 --- @field git_cmd string
 --- @field diff_opts Gitsigns.DiffOpts
+--- @field diffthis Gitsigns.DiffthisOpts
 --- @field base? string
 --- @field signs table<Gitsigns.SignType,Gitsigns.SignConfig>
 --- @field signs_staged table<Gitsigns.SignType,Gitsigns.SignConfig>
@@ -472,6 +476,16 @@ M.schema = {
            Ignore all white space changes.
        • ignore_whitespace_change_at_eol: boolean
             Ignore white space changes at end of line.
+    ]],
+  },
+
+  diffthis = {
+    type = 'table',
+    default = {
+      split = 'aboveleft',
+    },
+    description = [[
+      Options for the `:Gitsigns diffthis` command.
     ]],
   },
 
