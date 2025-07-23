@@ -1,14 +1,19 @@
-root                     = true
+root = true
 
 [*]
-end_of_line              = lf
-insert_final_newline     = true
-trim_trailing_whitespace = true
 charset                  = utf-8
-
-[*.lua]
-indent_style             = space
+end_of_line              = lf
 indent_size              = 2
+indent_style             = space
+insert_final_newline     = true
+spelling_language        = unset
+trim_trailing_whitespace = true
+
+max_line_length = unset
+trim            = true
+
+[*.{yaml,yml}]
+indent_size = 2
 
 [Makefile]
-indent_style             = tab
+indent_style = tab
