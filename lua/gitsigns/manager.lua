@@ -306,19 +306,9 @@ end
 local function update_lock(bcache, fn)
   if not config._update_lock then
     fn()
-    return
+  else
+    bcache.git_obj:lock(fn)
   end
-
-  -- Try to debug #1381
-  local got_lock = false
-  vim.defer_fn(function()
-    if not got_lock then
-      log.eprint('Could not get lock in 4 seconds, releasing lock')
-      bcache.git_obj.lock:release()
-    end
-  end, 4000)
-
-  bcache.git_obj.lock:with(fn)
 end
 
 --- @async
@@ -413,7 +403,7 @@ M.update = throttle_by_id(function(bufnr)
 
       local summary = Hunks.get_summary(bcache.hunks)
       summary.head = git_obj.repo.abbrev_head
-      Status:update(bufnr, summary)
+      Status.update(bufnr, summary)
     end
   end)
 end, true)
