@@ -55,12 +55,17 @@ function M:command(args, spec)
 
   local crypto = false
 
-  local lines, err, code = git_command({
-    '--git-dir',
-    self.gitdir,
-    self.detached and { '--work-tree', self.toplevel },
-    args,
-  }, spec)
+  local args0 = { '--git-dir', self.gitdir }
+
+  if self.detached then
+    -- If detached, we need to set the work tree to the toplevel so that git
+    -- commands work correctly.
+    args0 = vim.list_extend(args0, { '--work-tree', self.toplevel })
+  end
+
+  vim.list_extend(args0, args)
+
+  local lines, err, code = git_command(args0, spec)
 
   -- decrypt content, encrypted by "git-crypt"
   if lines and lines[1] and string.sub(lines[1], 1, 10) == '\0GITCRYPT\0' then
@@ -312,19 +317,22 @@ function M.get_info(dir, gitdir, worktree)
   -- > not at the top-level directory of the working tree, you should tell Git where the
   -- > top-level of the working tree is, with the --work-tree=<path> option (or GIT_WORK_TREE
   -- > environment variable)
-  local stdout, stderr, code = git_command({
-    gitdir and { '--git-dir', gitdir },
-    worktree and { '--work-tree', worktree },
-    'rev-parse',
-    '--show-toplevel',
-    has_abs_gd and '--absolute-git-dir' or '--git-dir',
-    '--abbrev-ref',
-    'HEAD',
-  }, {
-    ignore_error = true,
-    -- Worktree may be a relative path, so don't set cwd when it is provided.
-    cwd = not worktree and dir or nil,
-  })
+  local stdout, stderr, code = git_command(
+    util.flatten({
+      gitdir and { '--git-dir', gitdir },
+      worktree and { '--work-tree', worktree },
+      'rev-parse',
+      '--show-toplevel',
+      has_abs_gd and '--absolute-git-dir' or '--git-dir',
+      '--abbrev-ref',
+      'HEAD',
+    }),
+    {
+      ignore_error = true,
+      -- Worktree may be a relative path, so don't set cwd when it is provided.
+      cwd = not worktree and dir or nil,
+    }
+  )
 
   -- If the repo has no commits yet, rev-parse will fail. Ignore this error.
   if code > 0 and stderr and stderr:match(errors.e.ambiguous_head) then
@@ -437,16 +445,19 @@ function M:ls_files(file)
   -- --others + --exclude-standard means ignored files won't return info, but
   -- untracked files will. Unlike file_info_tree which won't return untracked
   -- files.
-  local results, stderr, code = self:command({
-    '-c',
-    'core.quotepath=off',
-    'ls-files',
-    '--stage',
-    '--others',
-    '--exclude-standard',
-    has_eol and '--eol',
-    file,
-  }, { ignore_error = true })
+  local results, stderr, code = self:command(
+    util.flatten({
+      '-c',
+      'core.quotepath=off',
+      'ls-files',
+      '--stage',
+      '--others',
+      '--exclude-standard',
+      has_eol and '--eol',
+      file,
+    }),
+    { ignore_error = true }
+  )
 
   -- ignore_error for the cases when we run:
   --    git ls-files --others exists/nonexist
@@ -526,12 +537,12 @@ end
 --- @param path string
 --- @param add? boolean
 function M:update_index(mode_bits, object, path, add)
-  self:command({
+  self:command(util.flatten({
     'update-index',
     add and '--add',
     '--cacheinfo',
     ('%s,%s,%s'):format(mode_bits, object, path),
-  })
+  }))
 end
 
 --- @async
