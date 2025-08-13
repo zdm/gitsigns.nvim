@@ -22,4 +22,4 @@ git reset --hard $(git rev-list --max-parents=0 HEAD)
 git merge --no-edit upstream/main
 git merge --no-edit update-readme feat-msys2 feat-git-crypt feat-git-option
 
-git push --all
+git push --all --force
