@@ -53,7 +53,7 @@ function M:command(args, spec)
   spec = spec or {}
   spec.cwd = self.toplevel
 
-  local crypto = false
+  local crypt = false
 
   local args0 = { '--git-dir', self.gitdir }
 
@@ -69,7 +69,7 @@ function M:command(args, spec)
 
   -- decrypt content, encrypted by "git-crypt"
   if lines and lines[1] and string.sub(lines[1], 1, 10) == '\0GITCRYPT\0' then
-    crypto = true
+    crypt = true
 
     spec.stdin = table.concat(lines, '\n')
 
@@ -82,7 +82,7 @@ function M:command(args, spec)
     }, spec)
   end
 
-  return lines, err, code, crypto
+  return lines, err, code, crypt
 end
 
 --- @async
@@ -124,7 +124,7 @@ end
 --- @param encoding? string
 --- @return string[] stdout, string? stderr
 function M:get_show_text(object, encoding)
-  local stdout, stderr, code, crypto = self:command({ 'show', object }, { text = false, ignore_error = true })
+  local stdout, stderr, code, crypt = self:command({ 'show', object }, { text = false, ignore_error = true })
 
   if encoding and encoding ~= 'utf-8' and iconv_supported(encoding) then
     for i, l in ipairs(stdout) do
@@ -132,7 +132,7 @@ function M:get_show_text(object, encoding)
     end
   end
 
-  return stdout, stderr, crypto
+  return stdout, stderr, crypt
 end
 
 --- @async
