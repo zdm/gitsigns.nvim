@@ -13,7 +13,7 @@ The documentation is generated with the lua script `gen_help.lua` which has been
 The documentation can be updated with:
 
 ```sh
-make gen_help
+make doc
 ```
 
 ## Testsuite
