@@ -8,22 +8,22 @@ git fetch upstream
 git switch update-readme
 git merge --no-edit upstream/main
 
-git switch feat-msys2
-git merge --no-edit upstream/main
-
-git switch feat-git-crypt
+git switch fix-msys2
 git merge --no-edit upstream/main
 
 git switch feat-git-option
 git merge --no-edit upstream/main
 
+git switch feat-git-crypt
+git merge --no-edit upstream/main
+
 git switch main
 git reset --hard $(git rev-list --max-parents=0 HEAD)
-git merge --no-edit upstream/main
-# git merge --no-edit update-readme feat-msys2 feat-git-crypt feat-git-option
+# git merge --no-edit upstream/main
+# git merge --no-edit update-readme fix-msys2 feat-git-option feat-git-crypt
 git merge --no-edit update-readme
-# git merge --no-edit feat-msys2
-git merge --no-edit feat-git-crypt
+git merge --no-edit fix-msys2
 git merge --no-edit feat-git-option
+git merge --no-edit feat-git-crypt
 
 git push --all --force
