@@ -204,7 +204,7 @@ local function new(info)
     self._watcher = assert(uv.new_fs_event())
 
     local debounced_handler = debounce_trailing(1000, curry1(watcher_cb, self.gitdir))
-    self._watcher:start(self.gitdir, {}, debounced_handler)
+    self._watcher:start(util.cygpath(self.gitdir), {}, debounced_handler)
 
     self._gc = gc_proxy(function()
       self._watcher:stop()
@@ -334,7 +334,7 @@ function M.get_info(dir, gitdir, worktree)
 
   -- On windows, git will emit paths with `/` but dir may contain `\` so need to
   -- normalize.
-  if dir and not vim.startswith(vim.fs.normalize(dir), toplevel_r) then
+  if dir and not vim.startswith(vim.fs.normalize(dir), vim.fs.normalize(util.cygpath(toplevel_r))) then
     log.dprintf("'%s' is outside worktree '%s'", dir, toplevel_r)
     -- outside of worktree
     return
