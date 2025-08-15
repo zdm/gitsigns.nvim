@@ -73,13 +73,17 @@ function M:command(args, spec)
 
     spec.stdin = table.concat(lines, '\n')
 
-    lines, err, code = git_command({
-      '--git-dir',
-      self.gitdir,
-      self.detached and { '--work-tree', self.toplevel },
-      'crypt',
-      'smudge',
-    }, spec)
+    local args0 = { '--git-dir', self.gitdir }
+
+    if self.detached then
+      -- If detached, we need to set the work tree to the toplevel so that git
+      -- commands work correctly.
+      args0 = vim.list_extend(args0, { '--work-tree', self.toplevel })
+    end
+
+    vim.list_extend(args0, { 'crypt', 'smudge' })
+
+    lines, err, code = git_command(args0, spec)
   end
 
   return lines, err, code, crypt
@@ -353,7 +357,7 @@ function M.get_info(dir, gitdir, worktree)
 
   -- On windows, git will emit paths with `/` but dir may contain `\` so need to
   -- normalize.
-  if dir and not vim.startswith(vim.fs.normalize(dir), toplevel_r) then
+  if dir and not vim.startswith(vim.fs.normalize(dir), vim.fs.normalize(util.cygpath(toplevel_r))) then
     log.dprintf("'%s' is outside worktree '%s'", dir, toplevel_r)
     -- outside of worktree
     return
