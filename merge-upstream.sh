@@ -19,7 +19,7 @@ git merge --no-edit upstream/main
 
 git switch main
 git reset --hard $(git rev-list --max-parents=0 HEAD)
-# git merge --no-edit upstream/main
+git merge --no-edit upstream/main
 # git merge --no-edit update-readme fix-msys2 feat-git-option feat-git-crypt
 git merge --no-edit update-readme
 git merge --no-edit fix-msys2
