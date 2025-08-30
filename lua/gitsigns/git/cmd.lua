@@ -1,7 +1,7 @@
 local async = require('gitsigns.async')
 local log = require('gitsigns.debug.log')
 local util = require('gitsigns.util')
-
+local config = require('gitsigns.config').config
 local asystem = async.wrap(3, require('gitsigns.system').system)
 
 --- @class Gitsigns.Git.JobSpec : vim.SystemOpts
@@ -19,7 +19,7 @@ local function git_command(args, spec)
   end
 
   local cmd = {
-    'git',
+    config.git_cmd,
     '--no-pager',
     '--no-optional-locks',
     '--literal-pathspecs',
