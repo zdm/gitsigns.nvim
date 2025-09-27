@@ -193,7 +193,7 @@ function M:_start_watcher()
   -- about what changed.
   local changed_files = {} --- @type table<string,true>
 
-  self._watcher:start(gitdir, {}, function(err, filename, events)
+  self._watcher:start(util.cygpath(gitdir), {}, function(err, filename, events)
     local __FUNC__ = 'watcher_cb'
 
     -- Do not use `self` in luv callbacks as it prevents garbage collection.
