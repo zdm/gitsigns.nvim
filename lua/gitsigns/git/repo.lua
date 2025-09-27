@@ -271,23 +271,8 @@ local function new(info)
   --- @cast self Gitsigns.Repo
 
   self.username = self:command({ 'config', 'user.name' }, { ignore_error = true })[1]
-<<<<<<< HEAD
 
-  do -- gitdir watcher
-    self._watcher_callbacks = {}
-    self._watcher = assert(uv.new_fs_event())
-
-    local debounced_handler = debounce_trailing(1000, curry1(watcher_cb, self.gitdir))
-    self._watcher:start(util.cygpath(self.gitdir), {}, debounced_handler)
-
-    self._gc = gc_proxy(function()
-      self._watcher:stop()
-      self._watcher:close()
-    end)
-  end
-=======
   self:_start_watcher()
->>>>>>> upstream/main
 
   return self
 end
