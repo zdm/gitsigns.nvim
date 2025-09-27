@@ -193,7 +193,7 @@ function M:_start_watcher()
   -- about what changed.
   local changed_files = {} --- @type table<string,true>
 
-  self._watcher:start(gitdir, {}, function(err, filename, events)
+  self._watcher:start(util.cygpath(gitdir), {}, function(err, filename, events)
     local __FUNC__ = 'watcher_cb'
 
     -- Do not use `self` in luv callbacks as it prevents garbage collection.
@@ -271,6 +271,7 @@ local function new(info)
   --- @cast self Gitsigns.Repo
 
   self.username = self:command({ 'config', 'user.name' }, { ignore_error = true })[1]
+
   self:_start_watcher()
 
   return self
@@ -393,7 +394,7 @@ function M.get_info(dir, gitdir, worktree)
 
   -- On windows, git will emit paths with `/` but dir may contain `\` so need to
   -- normalize.
-  if dir and not vim.startswith(vim.fs.normalize(dir), toplevel_r) then
+  if dir and not vim.startswith(vim.fs.normalize(dir), vim.fs.normalize(util.cygpath(toplevel_r))) then
     log.dprintf("'%s' is outside worktree '%s'", dir, toplevel_r)
     -- outside of worktree
     return
