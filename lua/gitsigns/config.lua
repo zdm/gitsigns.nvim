@@ -90,6 +90,7 @@
 --- @field _test_mode boolean
 --- @field _new_sign_calc boolean
 --- @field _update_lock boolean
+--- @field _commit_maps boolean
 
 --- @class Gitsigns.config
 local M = {}
@@ -837,6 +838,14 @@ M.schema = {
     default = false,
     description = [[
       Acquire a lock when updating signs.
+    ]],
+  },
+
+  _commit_maps = {
+    type = 'boolean',
+    default = false,
+    description = [[
+      Enable new mappings in commit buffers
     ]],
   },
 
