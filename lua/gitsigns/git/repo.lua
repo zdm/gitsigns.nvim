@@ -193,7 +193,7 @@ function M:_start_watcher()
   -- about what changed.
   local changed_files = {} --- @type table<string,true>
 
-  self._watcher:start(util.cygpath(gitdir), {}, function(err, filename, events)
+  self._watcher:start(gitdir, {}, function(err, filename, events)
     local __FUNC__ = 'watcher_cb'
 
     -- Do not use `self` in luv callbacks as it prevents garbage collection.
@@ -389,12 +389,12 @@ function M.get_info(dir, gitdir, worktree)
   end
   --- @cast stdout [string, string, string]
 
-  local toplevel_r = stdout[1]
-  local gitdir_r = stdout[2]
+  local toplevel_r = util.cygpath(stdout[1])
+  local gitdir_r = util.cygpath(stdout[2])
 
   -- On windows, git will emit paths with `/` but dir may contain `\` so need to
   -- normalize.
-  if dir and not vim.startswith(vim.fs.normalize(dir), vim.fs.normalize(util.cygpath(toplevel_r))) then
+  if dir and not vim.startswith(vim.fs.normalize(dir), vim.fs.normalize(toplevel_r)) then
     log.dprintf("'%s' is outside worktree '%s'", dir, toplevel_r)
     -- outside of worktree
     return
@@ -482,6 +482,8 @@ end
 --- @return string? err
 function M:ls_files(file)
   local has_eol = check_version(2, 9)
+
+  file = vim.fs.relpath(self.toplevel, file)
 
   -- --others + --exclude-standard means ignored files won't return info, but
   -- untracked files will. Unlike file_info_tree which won't return untracked
