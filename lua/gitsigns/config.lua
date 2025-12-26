@@ -91,6 +91,7 @@
 --- @field _new_sign_calc boolean
 --- @field _update_lock boolean
 --- @field _commit_maps boolean
+--- @field _statuscolumn? boolean
 
 --- @class Gitsigns.config
 local M = {}
@@ -846,6 +847,14 @@ M.schema = {
     default = false,
     description = [[
       Enable new mappings in commit buffers
+    ]],
+  },
+
+  _statuscolumn = {
+    type = 'boolean',
+    default = false,
+    description = [[
+      Statuscolumn mode is enabled
     ]],
   },
 
