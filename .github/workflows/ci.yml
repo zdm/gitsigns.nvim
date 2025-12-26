@@ -52,7 +52,7 @@ jobs:
       - name: Run Test
         run: make test
 
-  stylua:
+  format:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -61,8 +61,8 @@ jobs:
       - name: Download stylua
         run: make stylua
 
-      - name: Lint
-        run: make stylua-check
+      - name: Format
+        run: make format-check
 
   emmylua:
     runs-on: ubuntu-latest
