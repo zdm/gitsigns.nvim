@@ -232,13 +232,15 @@ local init = true
 --- @param cfg table|nil Configuration for Gitsigns.
 ---     See |gitsigns-usage| for more details.
 function M.setup(cfg)
-  if vim.fn.executable('git') == 0 then
-    print('gitsigns: git not in path. Aborting setup')
-    return
-  end
+  local Config = require('gitsigns.config')
 
   if cfg then
-    require('gitsigns.config').build(cfg)
+    Config.build(cfg)
+  end
+
+  if vim.fn.executable(Config.config.git_cmd) == 0 then
+    print('gitsigns: git not in path. Aborting setup')
+    return
   end
 
   -- Only do this once

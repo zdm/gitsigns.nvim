@@ -43,8 +43,14 @@ local CP = {}
 --- @return string[]
 local function complete_heads(arglead)
   --- @type string[]
-  local all =
-    vim.fn.systemlist({ 'git', 'rev-parse', '--symbolic', '--branches', '--tags', '--remotes' })
+  local all = vim.fn.systemlist({
+    config.git_cmd,
+    'rev-parse',
+    '--symbolic',
+    '--branches',
+    '--tags',
+    '--remotes',
+  })
   return vim.tbl_filter(
     --- @param x string
     --- @return boolean
